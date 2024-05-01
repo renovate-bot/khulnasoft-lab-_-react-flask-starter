@@ -1,0 +1,20 @@
+version: '2.1'
+orbs:
+  kengine: khulnasoft-lab/kengine@3.1.0
+jobs:
+  print-env-data:
+    machine:
+      image: ubuntu-2004:202010-01
+    steps:
+      - checkout
+      - kengine/fetch-kengine-env
+      - run:
+          command: |
+            export CYPRESS_BASE_URL=${KENGINE_ENVIRONMENT_URL}
+            export CYPRESS_BYPASS_TOKEN=${KENGINE_BYPASS_TOKEN}
+            env | grep -e KENGINE -e CYPRESS
+          name: Print out the environment data
+workflows:
+  use-my-orb:
+    jobs:
+      - print-env-data
